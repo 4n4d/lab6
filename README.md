@@ -1,7 +1,7 @@
-###Lab 4: Binary search trees
+# Lab 4: Binary search trees
 In this assignment, you will use the provided template code to implement a binary search tree that can store keys and their associated data (much like a dictionary). The main class is BinarySearchTree and it uses a Node internally to build the search tree.
 
-###A basic solution
+## A basic solution
 Implement the methods 
 *size
 *find
@@ -9,7 +9,7 @@ Implement the methods
 *remove
 as the first basic interface for the class. A KeyError exception should be raised for remove and find if the given key is not in the search tree. If k is a key already in the tree, then the old value should be replaced with the new value.
 
-##Example usage
+## Example usage
   credits = BinarySearchTree()
   credits.insert('DA3018', 7.5)
   credits.insert('DA2004', 7.5)
@@ -19,19 +19,19 @@ as the first basic interface for the class. A KeyError exception should be raise
   credits.remove('DA2003')
   m = credits.size()          # m = 2
 
-##Requirements
+## Requirements
 *You must use a binary search tree internally and you are not allowed to make use of a dictionary, list, or other datastructure in Python's libraries.
 *You may extend the given interface, but not change the suggested methods.
 *Use the proper exception handling, as indicated above!
 
-##Hint
+## Hint
 It is strongly suggested to use recursion for all (?) operations. 
 
-##For grading
+## For grading
 1.Show your code and demonstrate how it works using a small example program.
 2. What is the time complexity of the operations?
 
-###Add an iterator interface
+# Add an iterator interface
 Add an iterator interface to BinarySearchTree, so that you can iterate through key and value pairs using an ordingary for loop:
   for course, hp in credits:
       print(course)
@@ -39,20 +39,20 @@ Use a generator to implement the iterator! Generators is an easy way to achieve 
 
 You can read more about iterators and generators here and other places on the web (but be careful to note the Python version!).
 
-##Requirement
+## Requirement
 You must use a genererator.
 
-##For grading
+## For grading
 3. Demonstrate a working iterator interface.
 4. Explain how you have used yield.
 
-##Add support for dictionary-style lookups
+## Add support for dictionary-style lookups
 Add methods __getitem__ and __setitem__ to BinarySearchTree. This will enable constructs like:
   credits['DA2001'] = 15
   print(credits['DA3018'])
 
-##Requirement
+## Requirement
 When implementing __getitem__ and __setitem__, you must use the previously defined public interface. It is not acceptable to work with the internal representation of BinarySearchTree.
 
-##For grading
+## For grading
 5. Demonstrate working insertion and retrieval using the [key] interface.
