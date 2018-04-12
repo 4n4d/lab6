@@ -7,6 +7,7 @@ Implement the methods
 * find
 * insert
 * remove
+
 as the first basic interface for the class. A KeyError exception should be raised for remove and find if the given key is not in the search tree. If k is a key already in the tree, then the old value should be replaced with the new value.
 
 ## Example usage
