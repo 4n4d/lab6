@@ -42,6 +42,7 @@ class BinarySearchTree:
         Warning! This method has a bug, it does not behave according to specification!
         '''
         # if the key is equal we want to update the value at the key
+        # time complexity: like with find, we know nothing about the structure of our binary tree. so it may be that we have to loop through all elements in the tree before being able to insert the element. this means that it has complexity O(n). But if it is complete we reduce the size by half each time, so that we only have to consider the height of the tree, i.e O(lg(n))
         
         if v:
             v_key, x = v.data() # Ignoring x actually
@@ -61,12 +62,11 @@ class BinarySearchTree:
     def find(self, key):
         # returns None if the key was not found
         v = self.__find(self.root, key)
-        if v == None:
-            return None
         return v
 
     def __find(self, v, key):
         # recursively search through elements, if the key is found, return the value stored in the node
+        # Time-complexity: the tree has no guarantee that it is complete or even close to complete, could be fully inefficient (for instance, the tree has only right nodes). This means that in worst case scenario we loop through all nodes (if the element is not in the tree). Thus, time-complexity O(n). But if the tree is complete, then the time-complexity reduces to O(lg(n)) as we half the search-space for each iteration
         if v:
             v_key, x = v.data()
             print v_key
@@ -85,6 +85,10 @@ class BinarySearchTree:
             raise KeyError
         
     def __remove(self, v, parent, key, i):
+        # time-complexity: first we search for the element to be removed. if the tree is complete this operation should run at O(lg(n)), if the tree is "degenerate" it should run at O(n). If an element is found in the tree, but it has to be removed in the "complicated" way, we have to iterate through to find the minimum element. finding this element is pretty much O(n) if we are in a "degenerate" tree, but could be O(lg(n)).
+
+        
+        
         # when i > 0, we have removed something, hence no need to continue as
         # there is only one entry of any given key
         if v and i == 0:
@@ -169,6 +173,7 @@ class BinarySearchTree:
     def __size(self, v):
         # adds 1 for all nodes that are non-empty (an empty node will not have
         # any children)
+        # time complexity: goes through all nodes, if the tree has n-nodes it should have time complexity O(n)
         if v:
             return 1 + self.__size(v.left_child()) + self.__size(v.right_child())
         else:
@@ -190,11 +195,13 @@ class BinarySearchTree:
         if T == None:
             return None
 
-        l = [T.data()]
-        
+        #l = [T.data()]
+        l = []
         t = self.__transverse(T.left_child())
         if not t == None:
-            l = l + t
+            l = t
+
+        l = l +  [T.data()]
             
         t = self.__transverse(T.right_child())
         if not t == None:
@@ -205,6 +212,7 @@ class BinarySearchTree:
     def next(self):
         # just loop through the list that was set up by the iter-function that returned
         # this function as the generator function
+
         for i in self._list_of_elements:
             yield i
 
@@ -218,31 +226,37 @@ class BinarySearchTree:
         self.insert(key, val)
     
 def main():
+    # create BST
     credits = BinarySearchTree()
+
+    # add 6 elements
     credits.insert('DA3018', 7.5)
     credits.insert('DA2004', 7.5)
     credits.insert('DA2003', 6)
     credits.insert('DA2005', 4)
     credits.insert('DA2002', 5)
     credits.insert('DA4020', 10)
-    print(credits)
-    n = credits.size()          # n = 3
+    print(credits) # str function is essentially undefined, so nothing here
+    n = credits.size()          # n = 6
     print n
     hp = credits.find('DA3018') # set hp to 7.5
     print hp
     credits.remove('DA2004')
-    m = credits.size()          # m = 2
+    m = credits.size()          # m = 5
     print m
 
+    # we try the generator interface
     for course, hp in credits:
         print "Course: " + str(course) + " is " + str(hp) + " credits"
 
+    # we try the get/set interface
     print credits['DA3018']
-    credits['DA3018'] = 2
+    credits['DA3018'] = 2 # this element exists, should just change to 2
     print credits['DA3018']
-    credits['no'] = 10
+    credits['no'] = 10 # this element does not exists, should be created
     print credits['no']
 
+    # we try the generator interface again
     for course, hp in credits:
         print "Course: " + str(course) + " is " + str(hp) + " credits"
     
