@@ -1,64 +1,22 @@
-# Lab 4: Binary search trees
-In this assignment, you will use the provided template code to implement a binary search tree that can store keys and their associated data (much like a dictionary). The main class is BinarySearchTree and it uses a Node internally to build the search tree.
+# Lab 6: Unit testing
+Unit testing is a common methodology, gaining increasing importance, for ensuring correctness of software  and proofing for repeated mistakes. The main idea is to make testing systematic: instead of manually testing the functions and methods you write, a standardized framework is used to record useful test cases.
 
-## A basic solution
-Implement the methods 
-* size
-* find
-* insert
-* remove
+There are several advantages to unit tests.
 
-as the first basic interface for the class. A KeyError exception should be raised for remove and find if the given key is not in the search tree. If k is a key already in the tree, then the old value should be replaced with the new value.
+* Instead of every programmer or team inventing their own test system, a well known system can be used. This makes it easy to read others tests and write new ones.
+* You don't have to remember how you tested an old function when fix a bug in it or add a feature. 
+* Just coming up with suitable test data is work you should not need to do more than once: using unit testing you have a simple way of storing the test data.
+* Using unit tests enables systematic testing, reducing the risk of forgetting to test old functionality when adding features.
 
-## Example usage
-```python
-  credits = BinarySearchTree()
-  credits.insert('DA3018', 7.5)
-  credits.insert('DA2004', 7.5)
-  credits.insert('DA2003', 6)
-  n = credits.size()          # n = 3
-  hp = credits.find('DA3018') # set hp to 7.5
-  credits.remove('DA2003')
-  m = credits.size()          # m = 2
-```
+## Reading
+Look at the documentation (linked) for two proposed unit test frameworks in Python, available as modules:
 
-## Requirements
-* You must use a binary search tree internally and you are not allowed to make use of a dictionary, list, or other datastructure in Python's libraries.
-* You may extend the given interface, but not change the suggested methods.
-* Use the proper exception handling, as indicated above!
+* doctest is a minimalistic system with minimal beginner's threshold, so it is easy to get started with it. It is however limited in what tests it can run and also very Python specific.
+* unittest follows a pattern used for many other programming languages, specifically Java, which is the language that gave unit testing a "breakthrough". There is a bit more to learn when starting with unittest, but you get broader applicability. 
 
-## Hint
-It is strongly suggested to use recursion for all (?) operations. 
+Then watch a tutorial available on YouTube: Unit Testing Your Code with the unittest Module.
 
-## For grading
-1. Show your code and demonstrate how it works using a small example program.
-2. What is the time complexity of the operations?
+## Assignment
+Add comprehensive (as in: at least one test for all implemented methods) tests using the unittest module to your solutions to lab 4, binary search trees.
 
-# Add an iterator interface
-Add an iterator interface to BinarySearchTree, so that you can iterate through key and value pairs using an ordingary for loop:
-```python
-  for course, hp in credits:
-      print(course)
-```
-Use a generator to implement the iterator! Generators is an easy way to achieve iterators: you simple write code (for example a loop or a recursion) to iterate through your elements and use the  yield  and  yield from  statements whenever you reach an element to return. To design a generator, you can pretend that you want to print all elements rather than return them; then you substitute all print statements with yield.
-
-You can read more about iterators and generators here and other places on the web (but be careful to note the Python version!).
-
-## Requirement
-You must use a genererator.
-
-## For grading
-3. Demonstrate a working iterator interface.
-4. Explain how you have used yield.
-
-## Add support for dictionary-style lookups
-```python
-Add methods __getitem__ and __setitem__ to BinarySearchTree. This will enable constructs like:
-  credits['DA2001'] = 15
-  print(credits['DA3018'])
-```
-## Requirement
-When implementing __getitem__ and __setitem__, you must use the previously defined public interface. It is not acceptable to work with the internal representation of BinarySearchTree.
-
-## For grading
-5. Demonstrate working insertion and retrieval using the [key] interface.
+You code should of course pass all the tests! But you are also tasked with introducing a bug which a test case can find.
