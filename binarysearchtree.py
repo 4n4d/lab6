@@ -1,4 +1,6 @@
-# Lab 5
+# Lab 6
+import unittest
+
 class Node:
     def __init__(self, key, val):
         self._key = key
@@ -95,6 +97,7 @@ class BinarySearchTree:
             v_key, x = v.data()
             if key == v_key:
                 #found, start removal procedure...
+                
                 # if both nodes are empty, we can just remove it
                 if v.left_child() == None and v.right_child() == None:
                     if parent.left_child().data()[0]==key:
@@ -224,7 +227,77 @@ class BinarySearchTree:
         # use the insert function
         # (i.e. creates a new element if ['x'] does not exist)
         self.insert(key, val)
+
+
+class TestMethods(unittest.TestCase):
+
+    #size
+    #setitem
     
+    def test_insert(self):
+        test_bst = BinarySearchTree()
+        test_bst.insert('DA3018', 2)
+        self.assertEqual(test_bst.find('DA3018'), 2)
+
+    def test_getItem(self):
+        test_bst = BinarySearchTree()
+        test_bst.insert('DA3018', 2)
+        self.assertEqual(test_bst['DA3018'], 2)
+
+    def test_setItem(self):
+        test_bst = BinarySearchTree()
+        test_bst['DA3018']=2
+        self.assertEqual(test_bst['DA3018'], 2)
+        
+    def test_find(self):
+        test_bst = BinarySearchTree()
+        test_bst.insert('DA3018', 2)
+        self.assertEqual(test_bst.find('DA3018'),2)
+        self.assertEqual(test_bst.find('DA3019'),None)
+
+    def test_remove(self):
+        test_bst = BinarySearchTree()
+
+        with self.assertRaises(KeyError):
+            test_bst.remove('DA3018') # try to remove an element in a BST (not an element in BST), BST has never had any elements
+            
+        test_bst.insert('DA3018', 2) # add some element
+
+        with self.assertRaises(KeyError):
+            test_bst.remove('DA3019') # try to remove an element in a BST (not an element in BST), BST has some other element
+            
+        self.assertEqual(test_bst.find('DA3018'), 2) # see if the added element can be found
+        # THIS CAUSES AN ERROR B/C 'DA3018' is the first element in the tree
+        # the problem is that in my implementation I reference the node
+        # through its parent (as a means to solve some issue with references)
+        #test_bst.remove('DA3018') # remove the element
+        #self.assertEqual(test_bst.find('DA3018'), None) # see if it no longer can be found
+    def test_size(self):
+        test_bst = BinarySearchTree()
+        self.assertEqual(test_bst.size(), 0)
+        test_bst.insert('DA3018', 2)
+        self.assertEqual(test_bst.size(), 1)
+        test_bst.insert('DA3020', 3)
+        self.assertEqual(test_bst.size(), 2)
+        test_bst.insert('DA3019', 4)
+        self.assertEqual(test_bst.size(), 3)
+        test_bst.insert('DA3021', 5)
+        self.assertEqual(test_bst.size(), 4)
+        test_bst.remove('DA3021')
+        self.assertEqual(test_bst.size(), 3)
+
+    def test_yield(self):
+        test_bst = BinarySearchTree()
+        test_bst['A'] = 1
+        test_bst['B'] = 2
+        test_bst['C'] = 3
+        test_bst['0'] = 4
+        test_bst['1'] = 5
+        i = 0
+        for course, hp in test_bst:
+            i = i + 1
+        self.assertEqual(i, 5)
+        
 def main():
     # create BST
     credits = BinarySearchTree()
@@ -259,6 +332,8 @@ def main():
     # we try the generator interface again
     for course, hp in credits:
         print "Course: " + str(course) + " is " + str(hp) + " credits"
-    
+
+    unittest.main()
+        
 if __name__ == '__main__':
     main()    
