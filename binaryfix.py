@@ -90,12 +90,16 @@ class BinarySearchTree:
         # time-complexity: first we search for the element to be removed. if the tree is complete this operation should run at O(lg(n)), if the tree is "degenerate" it should run at O(n). If an element is found in the tree, but it has to be removed in the "complicated" way, we have to iterate through to find the minimum element. finding this element is pretty much O(n) if we are in a "degenerate" tree, but could be O(lg(n)).
 
         
+
+        # need to fix "parent = None" situation....
+
+
         
         # when i > 0, we have removed something, hence no need to continue as
         # there is only one entry of any given key
         if v and i == 0:
             v_key, x = v.data()
-            if key == v_key:
+            if key == v_key and parent != None:
                 #found, start removal procedure...
                 
                 # if both nodes are empty, we can just remove it
@@ -162,6 +166,59 @@ class BinarySearchTree:
                             parent.right_child().set_value(minNode.data()[1])
                             parent.right_child().set_key(minNode.data()[0])
                             parent.right_child().set_children(v.left_child(), minNode.right_child())
+                return 1+i # we increase this as we have removed an element, then the keyerror will not be raised.
+            
+            elif key == v_key and parent == None:
+                #found, start removal procedure...
+                    
+                # if both nodes are empty, we can just remove it
+                if self.root.left_child() == None and self.root.right_child() == None:
+                    self.root = None
+                    
+                # if one of the nodes are empty, we can just set this node to the next node
+                elif self.root.left_child() == None:
+                    self.root = self.root.right_child()
+                    
+                elif self.root.right_child() == None:
+                    self.root = self.root.left_child()
+
+                    
+                # if none of the nodes are empty then we have to think differently
+                else:    
+                # in this case we want to go to the right node (we know it exists)
+                # in order to reach the smallest element in this subtree
+                # we go as far to the left as we can (while loop)
+                # when the smallest element is found, set v to be this element
+                # then we need to re-link the parent of the minimum element
+                # and any children of the minimum element (will be in the right tree)
+
+                    minNode = v.right_child()
+                    minParent = None
+
+                    if not (minNode.left_child() == None):
+                        # if the first element is not the minimum value
+                        # we must loop down
+                        while not (minNode.left_child() == None):
+                            minParent = minNode
+                            minNode = minNode.left_child()
+
+                        # the element is found now, we do the remapping
+
+                        # we change values of "v" through the parent of "v"
+                        # "v" may be the right or the left element of its parent
+                        self.root.set_value(minNode.data()[1])
+                        self.root.set_key(minNode.data()[0])
+                        
+                        # we relink the parent of the min-element
+                        minParent.set_children(minNode.right_child(), minParent.right_child())
+                    else:
+                        # if the first element is the minimum value
+
+                        # similarily, "v" may be the right or left element of its parent
+                        self.root.set_value(minNode.data()[1])
+                        self.root.set_key(minNode.data()[0])
+                        self.root.set_children(self.root.left_child(), minNode.right_child())
+                        
                 return 1+i # we increase this as we have removed an element, then the keyerror will not be raised.
             
             # search children nodes
@@ -272,7 +329,6 @@ class TestMethods(unittest.TestCase):
         # through its parent (as a means to solve some issue with references)
         test_bst.remove('DA3018') # remove the element
         self.assertEqual(test_bst.find('DA3018'), None) # see if it no longer can be found
-
     def test_size(self):
         test_bst = BinarySearchTree()
         self.assertEqual(test_bst.size(), 0)
